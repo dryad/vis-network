@@ -260,6 +260,9 @@ const allOptions: OptionsConfig = {
       to: {
         number: number,
       },
+      eventual: {
+        number: number,
+      },
       __type__: {
         object: object,
         number: number,
@@ -662,6 +665,7 @@ const configureOptions: ConfiguratorConfig = {
     endPointOffset: {
       from: [0, -10, 10, 1],
       to: [0, -10, 10, 1],
+      eventual: [0, -10, 10, 1],
     },
     arrowStrikethrough: true,
     color: {

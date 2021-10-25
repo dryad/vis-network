@@ -199,6 +199,22 @@ export abstract class BezierEdgeBase<Via> extends EdgeBase<Via> {
           this.toPoint.y
         );
       } else {
+        //console.log('this', this)
+        //console.log('from', this.fromPoint);
+        //console.log('to', this.toPoint);
+        if (this.eventualPoint) {
+          //console.log('eventual', this.eventualPoint);
+          ctx.quadraticCurveTo(
+            viaNode1.x,
+            viaNode1.y,
+            //this.toPoint.x,
+            //this.toPoint.y
+            this.eventualPoint.x,
+            this.eventualPoint.y
+          );
+        }
+
+        // original
         // ctx.quadraticCurveTo(
         //   viaNode1.x,
         //   viaNode1.y,
@@ -207,14 +223,14 @@ export abstract class BezierEdgeBase<Via> extends EdgeBase<Via> {
         // );
 
         //experimental replace viaNode2 with 100,100
-        ctx.bezierCurveTo(
-          viaNode1.x,
-          viaNode1.y,
-          100,
-          100,
-          this.toPoint.x,
-          this.toPoint.y
-        );
+        // ctx.bezierCurveTo(
+        //   viaNode1.x,
+        //   viaNode1.y,
+        //   100,
+        //   100,
+        //   this.toPoint.x,
+        //   this.toPoint.y
+        // );
       }
     } else {
       // fallback to normal straight edge

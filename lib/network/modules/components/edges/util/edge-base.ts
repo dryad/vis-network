@@ -95,6 +95,7 @@ export abstract class EdgeBase<Via = undefined> implements EdgeType {
   public connect(): void {
     this.from = this._body.nodes[this.options.from];
     this.to = this._body.nodes[this.options.to];
+    this.eventual = this._body.nodes[this.options.eventual];
   }
 
   /** @inheritDoc */
@@ -112,6 +113,7 @@ export abstract class EdgeBase<Via = undefined> implements EdgeType {
 
     this.from = this._body.nodes[this.options.from];
     this.to = this._body.nodes[this.options.to];
+    this.eventual = this._body.nodes[this.options.eventual];
     this.id = this.options.id;
   }
 
@@ -166,7 +168,7 @@ export abstract class EdgeBase<Via = undefined> implements EdgeType {
   ): void {
     if (this.from != this.to) {
       // draw line
-      this._line(ctx, values, viaNode, fromPoint, eventualPoint);
+      this._line(ctx, values, viaNode, fromPoint, toPoint);
     } else {
       const [x, y, radius] = this._getCircleData(ctx);
       this._circle(ctx, values, x, y, radius);
@@ -256,7 +258,8 @@ export abstract class EdgeBase<Via = undefined> implements EdgeType {
     values: EdgeFormattingValues,
     viaNode: Via,
     fromPoint?: Point,
-    toPoint?: Point
+    toPoint?: Point,
+    eventualPoint?: Point
   ): void;
 
   /**
@@ -283,11 +286,13 @@ export abstract class EdgeBase<Via = undefined> implements EdgeType {
   public findBorderPositions(ctx: CanvasRenderingContext2D): {
     from: Point;
     to: Point;
+    eventual: Point;
   } {
     if (this.from != this.to) {
       return {
         from: this._findBorderPosition(this.from, ctx),
         to: this._findBorderPosition(this.to, ctx),
+        eventual: this._findBorderPosition(this.eventual, ctx),
       };
     } else {
       const [x, y] = this._getCircleData(ctx).slice(0, 2);
@@ -301,6 +306,13 @@ export abstract class EdgeBase<Via = undefined> implements EdgeType {
           direction: -1,
         }),
         to: this._findBorderPositionCircle(this.from, ctx, {
+          x,
+          y,
+          low: 0.6,
+          high: 0.8,
+          direction: 1,
+        }),
+        eventual: this._findBorderPositionCircle(this.eventual, ctx, {
           x,
           y,
           low: 0.6,

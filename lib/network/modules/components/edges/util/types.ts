@@ -127,6 +127,7 @@ export interface EdgeType {
   findBorderPositions(ctx: CanvasRenderingContext2D): {
     from: Point;
     to: Point;
+    eventual: Point;
   };
 
   /**

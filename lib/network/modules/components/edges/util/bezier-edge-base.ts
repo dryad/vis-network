@@ -203,34 +203,40 @@ export abstract class BezierEdgeBase<Via> extends EdgeBase<Via> {
         //console.log('from', this.fromPoint);
         //console.log('to', this.toPoint);
         if (this.eventualPoint) {
-          //console.log('eventual', this.eventualPoint);
+          // original
+          // ctx.quadraticCurveTo(
+          //   viaNode1.x,
+          //   viaNode1.y,
+          //   this.toPoint.x,
+          //   this.toPoint.y
+          // );
+          const [ct1x, ct1y, ct2x, ct2y] = getControlPoints(
+            this.fromPoint.x,
+            this.fromPoint.y,
+            this.toPoint.x,
+            this.toPoint.y,
+            this.eventualPoint.x,
+            this.eventualPoint.y,
+            0.5
+          );
+
+          ctx.quadraticCurveTo(ct1x, ct1y, this.toPoint.x, this.toPoint.y);
+          ctx.stroke();
           ctx.quadraticCurveTo(
-            viaNode1.x,
-            viaNode1.y,
-            //this.toPoint.x,
-            //this.toPoint.y
+            ct2x,
+            ct2y,
             this.eventualPoint.x,
             this.eventualPoint.y
           );
+          ctx.stroke();
+
+          // Uncomment to see Control points
+          // ctx.fillStyle = 'red';
+          // ctx.beginPath();
+          // ctx.arc(ct1x, ct1y, 5, 0, 2 * Math.PI);  // Control point one
+          // ctx.arc(ct2x, ct2y, 5, 0, 2 * Math.PI);  // Control point two
+          // ctx.fill();
         }
-
-        // original
-        // ctx.quadraticCurveTo(
-        //   viaNode1.x,
-        //   viaNode1.y,
-        //   this.toPoint.x,
-        //   this.toPoint.y
-        // );
-
-        //experimental replace viaNode2 with 100,100
-        // ctx.bezierCurveTo(
-        //   viaNode1.x,
-        //   viaNode1.y,
-        //   100,
-        //   100,
-        //   this.toPoint.x,
-        //   this.toPoint.y
-        // );
       }
     } else {
       // fallback to normal straight edge
@@ -250,4 +256,26 @@ export abstract class BezierEdgeBase<Via> extends EdgeBase<Via> {
   public getViaNode(): Via {
     return this._getViaCoordinates();
   }
+}
+
+// http://scaledinnovation.com/analytics/splines/splines.html
+/**
+ * @param x0
+ * @param y0
+ * @param x1
+ * @param y1
+ * @param x2
+ * @param y2
+ * @param t
+ */
+function getControlPoints(x0, y0, x1, y1, x2, y2, t) {
+  const d01 = Math.sqrt(Math.pow(x1 - x0, 2) + Math.pow(y1 - y0, 2));
+  const d12 = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+  const fa = (t * d01) / (d01 + d12); // scaling factor for triangle Ta
+  const fb = (t * d12) / (d01 + d12); // ditto for Tb, simplifies to fb=t-fa
+  const p1x = x1 - fa * (x2 - x0); // x2-x0 is the width of triangle T
+  const p1y = y1 - fa * (y2 - y0); // y2-y0 is the height of T
+  const p2x = x1 + fb * (x2 - x0);
+  const p2y = y1 + fb * (y2 - y0);
+  return [p1x, p1y, p2x, p2y];
 }

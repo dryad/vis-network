@@ -748,6 +748,15 @@ export abstract class EdgeBase<Via = undefined> implements EdgeType {
       scaleFactor = Math.abs(values.middleArrowScale!);
       type = values.middleArrowType!;
     }
+    // if (this.eventual) {
+    //   console.log('eventual: ', this.eventual);
+    // }
+    // else {
+    //   console.log('no eventual'); /// there is NEVER an eventual here.
+    // }
+    // if (this.eventual) {
+    //   node1 = this.eventual;
+    // }
 
     const length = 15 * scaleFactor + 3 * lineWidth; // 3* lineWidth is the width of the edge.
 
@@ -852,6 +861,7 @@ export abstract class EdgeBase<Via = undefined> implements EdgeType {
     arrowData: ArrowData
   ): void {
     // set style
+    //console.log('arrowData:', arrowData);
     ctx.strokeStyle = this.getColor(ctx, values);
     ctx.fillStyle = ctx.strokeStyle;
     ctx.lineWidth = values.width;

@@ -236,6 +236,69 @@ export abstract class BezierEdgeBase<Via> extends EdgeBase<Via> {
           // ctx.arc(ct1x, ct1y, 5, 0, 2 * Math.PI);  // Control point one
           // ctx.arc(ct2x, ct2y, 5, 0, 2 * Math.PI);  // Control point two
           // ctx.fill();
+
+          // using last leg of curve (toPoint -> ct2 -> eventualPoint)
+          const [arrow0x, arrow0y] = getArrowPoint3(
+            this.toPoint.x,
+            this.toPoint.y,
+            ct2x,
+            ct2y,
+            this.eventualPoint.x,
+            this.eventualPoint.y,
+            0.93
+          );
+          const [arrow1x, arrow1y] = getArrowPoint3(
+            this.toPoint.x,
+            this.toPoint.y,
+            ct2x,
+            ct2y,
+            this.eventualPoint.x,
+            this.eventualPoint.y,
+            0.95
+          );
+
+          // using all points of curve (fromPoint -> ct1 -> toPoint -> ct2 -> eventualPoint)
+          //arrow0 is off center a little bit ?
+          // const [arrow0x, arrow0y] = getArrowPoint5(
+          //   this.fromPoint.x,
+          //   this.fromPoint.y,
+          //   ct1x,
+          //   ct1y,
+          //   this.toPoint.x,
+          //   this.toPoint.y,
+          //   ct2x,
+          //   ct2y,
+          //   this.eventualPoint.x,
+          //   this.eventualPoint.y,
+          //   0.95
+          // );
+
+          // const [arrow1x, arrow1y] = getArrowPoint5(
+          //   this.fromPoint.x,
+          //   this.fromPoint.y,
+          //   ct1x,
+          //   ct1y,
+          //   this.toPoint.x,
+          //   this.toPoint.y,
+          //   ct2x,
+          //   ct2y,
+          //   this.eventualPoint.x,
+          //   this.eventualPoint.y,
+          //   0.97
+          // );
+
+          //get angle from arrow0 to arrow1
+          const angle = getAngle(arrow0x, arrow0y, arrow1x, arrow1y);
+          //console.log('arrow angle', angle);
+
+          //temp arrow location marker (shows us where the second point is for calculating the angle)
+          // ctx.fillStyle = 'red';
+          // ctx.beginPath();
+          //  ctx.arc(arrow0x, arrow0y, 5, 0, 2 * Math.PI);  // Control point one
+          // // ctx.arc(ct2x, ct2y, 5, 0, 2 * Math.PI);  // Control point two
+          // ctx.fill();
+
+          drawArrow(ctx, arrow1x, arrow1y, angle);
         }
       }
     } else {
@@ -279,3 +342,144 @@ function getControlPoints(x0, y0, x1, y1, x2, y2, t) {
   const p2y = y1 + fb * (y2 - y0);
   return [p1x, p1y, p2x, p2y];
 }
+
+/**
+ * @param p0x
+ * @param p0y
+ * @param p1x
+ * @param p1y
+ * @param p2x
+ * @param p2y
+ * @param t
+ */
+
+/**
+ * @param p0x
+ * @param p0y
+ * @param p1x
+ * @param p1y
+ * @param p2x
+ * @param p2y
+ * @param t
+ */
+function getArrowPoint3(p0x, p0y, p1x, p1y, p2x, p2y, t) {
+  //x = (1 - t) * (1 - t) * p[0].x + 2 * (1 - t) * t * p[1].x + t * t * p[2].x;
+  //y = (1 - t) * (1 - t) * p[0].y + 2 * (1 - t) * t * p[1].y + t * t * p[2].y;
+  const arrow_x = (1 - t) * (1 - t) * p0x + 2 * (1 - t) * t * p1x + t * t * p2x;
+  const arrow_y = (1 - t) * (1 - t) * p0y + 2 * (1 - t) * t * p1y + t * t * p2y;
+  return [arrow_x, arrow_y];
+}
+
+/**
+ * @param p0x
+ * @param p0y
+ * @param p1x
+ * @param p1y
+ * @param p2x
+ * @param p2y
+ * @param p3x
+ * @param p3y
+ * @param p4x
+ * @param p4y
+ * @param t
+ */
+function getArrowPoint5(p0x, p0y, p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y, t) {
+  //x = (1-t)*(1-t)*(1-t)*p0x + 3*(1-t)*(1-t)*t*p1x + 3*(1-t)*t*t*p2x + t*t*t*p3x;
+  //y = (1-t)*(1-t)*(1-t)*p0y + 3*(1-t)*(1-t)*t*p1y + 3*(1-t)*t*t*p2y + t*t*t*p3y;
+  const arrow_x =
+    (1 - t) * (1 - t) * (1 - t) * (1 - t) * p0x +
+    4 * (1 - t) * (1 - t) * (1 - t) * t * p1x +
+    4 * (1 - t) * (1 - t) * t * p2x +
+    4 * (1 - t) * t * p3x +
+    t * t * t * t * p4x;
+  const arrow_y =
+    (1 - t) * (1 - t) * (1 - t) * (1 - t) * p0y +
+    4 * (1 - t) * (1 - t) * (1 - t) * t * p1y +
+    4 * (1 - t) * (1 - t) * t * p2y +
+    4 * (1 - t) * t * p3y +
+    t * t * t * t * p4y;
+  return [arrow_x, arrow_y];
+}
+
+/**
+ * @param p0x
+ * @param p0y
+ * @param p1x
+ * @param p1y
+ */
+function getAngle(p0x, p0y, p1x, p1y) {
+  //return Math.atan2(p1y - p0y, p1x - p0x) * 180 / Math.PI;
+  return Math.atan2(p1y - p0y, p1x - p0x);
+}
+
+/**
+ * @param ctx
+ * @param x
+ * @param y
+ * @param angle
+ */
+function drawArrow(ctx, x, y, angle) {
+  const points = [
+    // arrow shape
+    { x: 0, y: 0 },
+    { x: -1, y: 0.3 },
+    { x: -0.9, y: 0 },
+    { x: -1, y: -0.3 },
+  ];
+  const transformed_points = transformArrow(points, x, y, angle);
+  drawPath(ctx, transformed_points);
+}
+
+/**
+ * @param ctx
+ * @param points
+ */
+function drawPath(ctx, points) {
+  ctx.beginPath();
+  ctx.moveTo(points[0].x, points[0].y);
+  for (let i = 1; i < points.length; ++i) {
+    ctx.lineTo(points[i].x, points[i].y);
+  }
+  ctx.closePath();
+  ctx.fill();
+}
+
+/**
+ * @param points
+ * @param x
+ * @param y
+ * @param angle
+ */
+function transformArrow(points, x, y, angle) {
+  if (!Array.isArray(points)) {
+    points = [points];
+  }
+  const length = 18; // from edge-base.ts: const length = 15 * scaleFactor + 3 * lineWidth; // 3* lineWidth is the width of the edge.
+
+  for (let i = 0; i < points.length; ++i) {
+    const p = points[i];
+    const xt = p.x * Math.cos(angle) - p.y * Math.sin(angle);
+    const yt = p.x * Math.sin(angle) + p.y * Math.cos(angle);
+
+    p.x = x + length * xt;
+    p.y = y + length * yt;
+  }
+  return points;
+}
+
+// /**
+//  * Get a point on a circle
+//  *
+//  * @param {number} x
+//  * @param {number} y
+//  * @param {number} radius
+//  * @param {number} angle
+//  * @returns {object} point
+//  * @private
+//  */
+//  _pointOnCircle(x, y, radius, angle) {
+//   return {
+//     x: x + radius * Math.cos(angle),
+//     y: y - radius * Math.sin(angle),
+//   };
+// }

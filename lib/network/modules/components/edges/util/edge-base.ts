@@ -862,6 +862,7 @@ export abstract class EdgeBase<Via = undefined> implements EdgeType {
   ): void {
     // set style
     //console.log('arrowData:', arrowData);
+    /*
     ctx.strokeStyle = this.getColor(ctx, values);
     ctx.fillStyle = ctx.strokeStyle;
     ctx.lineWidth = values.width;
@@ -875,6 +876,7 @@ export abstract class EdgeBase<Via = undefined> implements EdgeType {
       // disable shadows for other elements.
       this.disableShadow(ctx, values);
     }
+    */
   }
 
   /**

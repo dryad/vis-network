@@ -187,7 +187,6 @@ export abstract class BezierEdgeBase<Via> extends EdgeBase<Via> {
   ): void {
     ctx.beginPath();
     ctx.moveTo(this.fromPoint.x, this.fromPoint.y);
-    ctx.lineWidth = 3;
 
     if (viaNode1 != null && viaNode1.x != null) {
       if (viaNode2 != null && viaNode2.x != null) {

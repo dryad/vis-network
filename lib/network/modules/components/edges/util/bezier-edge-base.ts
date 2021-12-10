@@ -199,10 +199,30 @@ export abstract class BezierEdgeBase<Via> extends EdgeBase<Via> {
           this.toPoint.y
         );
       } else {
-        //console.log('this', this)
-        //console.log('from', this.fromPoint);
-        //console.log('to', this.toPoint);
-        if (this.eventualPoint) {
+        // console.log('this', this)
+        // console.log('from', this.fromPoint);
+        // console.log('to', this.toPoint);
+
+        if (this.toPoint && this.eventualPoint == null) {
+          // unary edge (replaced loops, between 2 nodes only)
+          ctx.lineTo(this.toPoint.x, this.toPoint.y);
+          ctx.stroke();
+          const angle = getAngle(
+            this.fromPoint.x,
+            this.fromPoint.y,
+            this.toPoint.x,
+            this.toPoint.y
+          );
+          const [arrowx, arrowy] = percentPointOnLine(
+            this.fromPoint.x,
+            this.fromPoint.y,
+            this.toPoint.x,
+            this.toPoint.y,
+            0.9
+          );
+          drawArrow(ctx, arrowx, arrowy, angle);
+        } else if (this.eventualPoint) {
+          // standard edge (between two nodes, creates middle node)
           // original
           // ctx.quadraticCurveTo(
           //   viaNode1.x,
@@ -467,6 +487,16 @@ function transformArrow(points, x, y, angle) {
   return points;
 }
 
+/**
+ * @param x1
+ * @param y1
+ * @param x2
+ * @param y2
+ * @param per
+ */
+function percentPointOnLine(x1, y1, x2, y2, per) {
+  return [x1 + (x2 - x1) * per, y1 + (y2 - y1) * per];
+}
 // /**
 //  * Get a point on a circle
 //  *

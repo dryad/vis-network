@@ -141,7 +141,7 @@ const nodeOptions: OptionsConfig = {
   isLabelNode: { boolean: bool },
   label: { string, undefined: "undefined" },
   labelHighlightBold: { boolean: bool },
-  labelNode: { string },
+  labelOfNode: { string },
   level: { number, undefined: "undefined" },
   margin: {
     top: { number },

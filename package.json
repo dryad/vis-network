@@ -23,7 +23,7 @@
     "network",
     "browser"
   ],
-  "browser": "peer/umd/vis-network.min.js",
+  "browser": "peer/umd/vis-network.js",
   "jsnext": "esnext/esm/vis-network.js",
   "main": "peer/umd/vis-network.js",
   "module": "peer/esm/vis-network.js",

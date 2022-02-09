@@ -40,7 +40,7 @@ export abstract class EdgeBase<Via = undefined> implements EdgeType {
   public eventual!: VNode; // Initialized in setOptions
   public eventualPoint: Point;
   public via?: VNode;
-
+  public directed!: boolean;
   public color: unknown = {};
   public colorDirty = true;
   public id!: Id; // Initialized in setOptions
@@ -96,6 +96,7 @@ export abstract class EdgeBase<Via = undefined> implements EdgeType {
     this.from = this._body.nodes[this.options.from];
     this.to = this._body.nodes[this.options.to];
     this.eventual = this._body.nodes[this.options.eventual];
+    this.directed = this._body.nodes[this.options.directed];
   }
 
   /** @inheritDoc */
@@ -114,6 +115,7 @@ export abstract class EdgeBase<Via = undefined> implements EdgeType {
     this.from = this._body.nodes[this.options.from];
     this.to = this._body.nodes[this.options.to];
     this.eventual = this._body.nodes[this.options.eventual];
+    this.directed = this._body.nodes[this.options.directed];
     this.id = this.options.id;
   }
 
@@ -154,6 +156,7 @@ export abstract class EdgeBase<Via = undefined> implements EdgeType {
    * @param fromPoint - TODO: Seems ignored, remove?
    * @param toPoint - TODO: Seems ignored, remove?
    * @param eventualPoint
+   * @param directed
    */
   private _drawLine(
     ctx: CanvasRenderingContext2D,
@@ -164,7 +167,8 @@ export abstract class EdgeBase<Via = undefined> implements EdgeType {
     viaNode: Via,
     fromPoint?: Point,
     toPoint?: Point,
-    eventualPoint?: Point
+    eventualPoint?: Point,
+    directed?: boolean
   ): void {
     if (this.from != this.to) {
       // draw line
@@ -259,7 +263,8 @@ export abstract class EdgeBase<Via = undefined> implements EdgeType {
     viaNode: Via,
     fromPoint?: Point,
     toPoint?: Point,
-    eventualPoint?: Point
+    eventualPoint?: Point,
+    directed?: boolean
   ): void;
 
   /**

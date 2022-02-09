@@ -117,7 +117,7 @@ export interface EdgeType {
   eventualPoint: Point;
   via?: VNode;
   viaPoint?: Point;
-
+  directed: boolean;
   /**
    * Find the intersection between the borders of the nodes and the edge.
    *

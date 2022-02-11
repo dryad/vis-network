@@ -318,7 +318,9 @@ export abstract class BezierEdgeBase<Via> extends EdgeBase<Via> {
           // // ctx.arc(ct2x, ct2y, 5, 0, 2 * Math.PI);  // Control point two
           // ctx.fill();
 
-          drawArrow(ctx, arrow1x, arrow1y, angle);
+          if (this.options.directed) {
+            drawArrow(ctx, arrow1x, arrow1y, angle);
+          }
         }
       }
     } else {

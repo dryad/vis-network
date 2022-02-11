@@ -35,6 +35,7 @@ export interface DragPath {
   from: Point;
   to: Point;
   eventual: Point;
+  directed?: boolean;
   button?: number;
 
   shiftKey?: boolean;

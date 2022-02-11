@@ -138,8 +138,10 @@ const nodeOptions: OptionsConfig = {
     left: { number },
     __type__: { object, number },
   },
+  isLabelNode: { boolean: bool },
   label: { string, undefined: "undefined" },
   labelHighlightBold: { boolean: bool },
+  labelOfNode: { string },
   level: { number, undefined: "undefined" },
   margin: {
     top: { number },
@@ -607,6 +609,7 @@ const configureOptions: ConfiguratorConfig = {
     },
     //group: 'string',
     hidden: false,
+    isLabelNode: false,
     labelHighlightBold: true,
     //icon: {
     //  face: 'string',  //'FontAwesome',

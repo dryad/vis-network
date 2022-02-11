@@ -42,3 +42,8 @@ coverage/
 /standalone/
 /styles/
 vis-network-*.tgz
+.yarnrc.yml
+yarn.lock
+yarn.build.json
+.yarn/plugins/@ojkelly/plugin-build.cjs
+.yarn/releases/yarn-3.1.0.cjs

@@ -248,8 +248,19 @@ export abstract class BezierEdgeBase<Via> extends EdgeBase<Via> {
             this.eventualPoint.x,
             this.eventualPoint.y
           );
+
+          //this is where we would draw a glow around the edge
+          const is_edge_selected = false;
+          if (is_edge_selected) {
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = "red";
+          }
           ctx.stroke();
 
+          //this is where we would disable the glow/shadow for the next time a draw is performed.
+          if (is_edge_selected) {
+            ctx.shadowColor = "rgba(0,0,0,0)";
+          }
           // Uncomment to see Control points
           // ctx.fillStyle = 'red';
           // ctx.beginPath();

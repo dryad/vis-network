@@ -250,6 +250,7 @@ export abstract class BezierEdgeBase<Via> extends EdgeBase<Via> {
           );
 
           //this is where we would draw a glow around the edge
+          // console.log('edge', this);
           const is_edge_selected = false;
           if (is_edge_selected) {
             ctx.shadowBlur = 15;

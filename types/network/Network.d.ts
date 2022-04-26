@@ -67,7 +67,7 @@ export type NetworkEvents =
   'afterDrawing' |
   'animationFinished' |
   'configChange'|
-  'hoverSet';
+  'hoveredNodes';
 
 /**
  * Network is a visualization to display networks and networks consisting of nodes and edges.

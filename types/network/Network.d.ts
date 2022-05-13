@@ -503,6 +503,12 @@ export class Network {
   setSelection(selection: { nodes?: IdType[], edges?: IdType[] }, options?: SelectionOptions): void;
 
   /**
+   * Sets the hovered node from chips.
+   *
+   */
+  setHover(hover: { node?: string}): void;
+
+  /**
    * Unselect all objects.
    * Does not fire events.
    */
